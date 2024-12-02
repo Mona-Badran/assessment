@@ -24,4 +24,13 @@ class ProjectController extends Controller
         return response()->json(['message' => 'Project created successfully', 'project' => $project], 201);
     }
 
+    public function show($id){
+        $project = \App\Models\Project::find($id);
+
+        if (!$project) {
+            return response()->json(['message' => 'Project not found'], 404);
+        }
+    
+        return response()->json($project);
+    }
 }
