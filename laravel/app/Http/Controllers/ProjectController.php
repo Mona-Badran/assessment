@@ -52,4 +52,15 @@ class ProjectController extends Controller
     
         return response()->json(['message' => 'Project updated successfully', 'project' => $project]);
     }
+    public function delete($id){
+        $project = \App\Models\Project::find($id);
+
+        if (!$project) {
+            return response()->json(['message' => 'Project not found'], 404);
+        }
+    
+        $project->delete();
+    
+        return response()->json(['message' => 'Project deleted successfully']);
+    }
 }
