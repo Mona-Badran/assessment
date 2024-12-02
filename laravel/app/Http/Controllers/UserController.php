@@ -26,4 +26,14 @@ class UserController extends Controller
         return response()->json(['message' => 'User created successfully', 'user' => $user], 201);
         
     }
+    public function show($id){
+        $user = \App\Models\User::find($id);
+    
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+    
+        return response()->json($user);
+    }
+
 }
