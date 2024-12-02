@@ -35,5 +35,28 @@ class UserController extends Controller
     
         return response()->json($user);
     }
+    public function update(Request $request, $id){
+        $user = \App\Models\User::find($id);
+
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+    
+        $validated = $request->validate([
+            'name' => 'sometimes|string|max:255',
+            'email' => 'sometimes|email|unique:users,email,' . $id,
+            'password' => 'sometimes|string|min:8',
+        ]);
+    
+        $user->update([
+            'name' => $validated['name'] ?? $user->name,
+            'email' => $validated['email'] ?? $user->email,
+            'password' => isset($validated['password']) ? bcrypt($validated['password']) : $user->password,
+        ]);
+    
+        return response()->json(['message' => 'User updated successfully', 'user' => $user]);
+    
+    }
+
 
 }
