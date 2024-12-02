@@ -6,5 +6,8 @@ use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
-    //
+    public function index(){
+        $projects = \App\Models\Project::all(); // Fetch all projects
+        return response()->json($projects);
+    }
 }
