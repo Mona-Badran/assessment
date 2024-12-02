@@ -33,4 +33,23 @@ class ProjectController extends Controller
     
         return response()->json($project);
     }
+    public function update(Request $request, $id){
+        $project = \App\Models\Project::find($id);
+
+        if (!$project) {
+            return response()->json(['message' => 'Project not found'], 404);
+        }
+    
+        $validated = $request->validate([
+            'title' => 'sometimes|string|max:255',
+            'description' => 'sometimes|string',
+        ]);
+    
+        $project->update([
+            'title' => $validated['title'] ?? $project->title,
+            'description' => $validated['description'] ?? $project->description,
+        ]);
+    
+        return response()->json(['message' => 'Project updated successfully', 'project' => $project]);
+    }
 }
